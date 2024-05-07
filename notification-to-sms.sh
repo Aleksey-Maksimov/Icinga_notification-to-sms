@@ -1,12 +1,19 @@
 #!/bin/sh
 #
-# Script for SMS notifications for Icinga 
-# Tested on Debian GNU/Linux 8.8 (Jessie) with Icinga r2.6.3-1, SMS Server Tools (smsd) 3.1.15
-# Put here /etc/icinga2/scripts/notification-to-sms.sh 
+# Script for SMS notifications for Icinga
 # Aleksey Maksimov <aleksey.maksimov@it-kb.ru>
 #
+# Tested on:
+# - Debian GNU/Linux 8.8 (Jessie) with Icinga r2.6.3-1, SMS Server Tools (smsd) 3.1.15
+# - Debian GNU/Linux 9.12 (Stretch) with Icinga r2.11.4-1, SMS Server Tools (smsd) 3.1.15
+#
+# Put here /etc/icinga2/scripts/notification-to-sms.sh 
+#
+# 2017.09.27 - Initial version
+# 2020.07.12 - Added output truncation for --service-state option
+#
 PLUGIN_NAME="Plugin for SMS notifications for Icinga Director"
-PLUGIN_VERSION="2017.09.27"
+PLUGIN_VERSION="2020.07.12"
 PRINTINFO=`printf "\n%s, version %s\n \n" "$PLUGIN_NAME" "$PLUGIN_VERSION"`
 #
 #
@@ -122,11 +129,15 @@ TEMPLATE
 	#
 elif [ "$PLUGINMODE" = "service-mode" ]; then
 	#
+	if [ -n "$SERVICEOUTPUT" ]; then
+	SERVICEOUTPUTTOSMS=`echo $SERVICEOUTPUT | cut -c1-100`
+	fi
+	#
 template=`cat <<TEMPLATE
 Icinga $NOTIFICATIONTYPE
-Host: $HOSTDISPLAYNAME ($HOSTADDRESS)
+Host: $HOSTDISPLAYNAME
 Service: $SERVICEDESC
-Info: $SERVICEOUTPUT
+State: $SERVICEOUTPUTTOSMS
 Time: $TIMETOSMS
 $ITEMCOMMENTTOSMS
 $COMMENTTOSMS

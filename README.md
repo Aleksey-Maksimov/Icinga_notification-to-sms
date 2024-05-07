@@ -2,7 +2,9 @@
 
 **notification-to-sms** - Script for SMS notifications (Host and Service) for Icinga
  
-Tested on **Debian GNU/Linux 8.8 (Jessie)** with **Icinga r2.6.3-1**, **SMS Server Tools (smsd) 3.1.15**
+Tested on:
+- Debian GNU/Linux 8.8 (Jessie) with Icinga r2.6.3-1, SMS Server Tools (smsd) 3.1.15
+- Debian GNU/Linux 9.12 (Stretch) with Icinga r2.11.4-1, SMS Server Tools (smsd) 3.1.15
 
 Put here: /etc/icinga2/scripts/notification-to-sms.sh 
  
